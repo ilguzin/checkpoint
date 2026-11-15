@@ -1,0 +1,6 @@
+# The checkpoint build context comes from Compose's core service.
+FROM debian:12
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg ca-certificates && rm -rf /var/lib/apt/lists/*
+COPY --from=checkpoint /checkpoint /checkpoint
+USER 10001:10001
+ENTRYPOINT ["/checkpoint"]

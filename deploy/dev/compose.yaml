@@ -1,0 +1,117 @@
+name: checkpoint-dev
+services:
+  core:
+    image: checkpoint-dev:local
+    pull_policy: never
+    build:
+      context: ../..
+    command: [serve]
+    user: "${CP_UID:?run scripts/dev.sh prepare}:${CP_GID:?run scripts/dev.sh prepare}"
+    env_file: ../../.dev/runtime.env
+    environment:
+      CHECKPOINT_LISTEN: 0.0.0.0:8080
+      CHECKPOINT_MINUTES_CONFIG: /media-config/minutes.yaml
+      CHECKPOINT_RECORDER_TOKEN_FILE: /media-config/recorder.token
+      CHECKPOINT_PROCESSOR_TOKEN_FILE: /media-config/processor.token
+      CHECKPOINT_DATABASE: /data/checkpoint.db
+      LIVEKIT_URL: http://livekit:7880
+    ports:
+      - "127.0.0.1:18180:8080"
+    volumes:
+      - ../../.dev/data:/data
+      - ../../.dev/media:/media-config:ro
+      - ../../.dev/media-run:/media-run
+      - ../../.dev/recordings:/recordings
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    depends_on: [livekit]
+    logging: &logs
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}
+  signal:
+    image: checkpoint-dev:local
+    pull_policy: never
+    command: [signal]
+    user: "${CP_UID}:${CP_GID}"
+    env_file: ../../.dev/runtime.env
+    environment:
+      CHECKPOINT_SIGNAL_LISTEN: 0.0.0.0:8081
+      CHECKPOINT_DATABASE: /data/checkpoint.db
+      LIVEKIT_URL: http://livekit:7880
+    ports:
+      - "127.0.0.1:18181:8081"
+    volumes:
+      - ../../.dev/data:/data:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    depends_on: [core]
+    logging: *logs
+  livekit:
+    image: livekit/livekit-server:v1.13.11@sha256:25cd902de7cacbd5f1f779f6a6ac1eae20ba8f56b0935934ce6b0ab80d1e3d20
+    command: [--config, /etc/livekit.yaml]
+    user: "${CP_UID}:${CP_GID}"
+    ports:
+      - "127.0.0.1:17880:7880"
+      - "${TAILNET_IP:?run scripts/dev.sh prepare}:7881:7881/tcp"
+      - "${TAILNET_IP}:7882:7882/udp"
+    volumes:
+      - ../../.dev/livekit.yaml:/etc/livekit.yaml:ro
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    logging: *logs
+  observer:
+    image: checkpoint-dev:local
+    pull_policy: never
+    command: [observe]
+    user: "${CP_UID}:${CP_GID}"
+    env_file: ../../.dev/observer.env
+    environment:
+      CHECKPOINT_OBSERVER_LISTEN: 0.0.0.0:8082
+      CHECKPOINT_CORE_HEALTH_URL: http://core:8080/healthz
+      CHECKPOINT_OBSERVER_DATABASE: /observer-data/observer.db
+      LIVEKIT_URL: http://livekit:7880
+    ports:
+      - "127.0.0.1:18182:8082"
+    volumes:
+      - ../../.dev/observer-data:/observer-data
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    logging: *logs
+  recorder:
+    image: checkpoint-dev-recorder:local
+    pull_policy: never
+    build:
+      context: ../..
+      dockerfile: deploy/dev/Dockerfile.recorder
+      additional_contexts:
+        checkpoint: service:core
+    command: [minutes, worker, recorder]
+    # LiveKit advertises the host Tailscale IP: use the same route as local browsers.
+    network_mode: host
+    user: "${CP_UID}:${CP_GID}"
+    environment:
+      CHECKPOINT_MINUTES_CONFIG: /media-config/minutes.yaml
+      CHECKPOINT_MEDIA_TOKEN_FILE: /media-config/recorder.token
+      CHECKPOINT_RECORDER_STORAGE: /recorder-data
+      CHECKPOINT_RECORDER_LIVEKIT_URL: http://127.0.0.1:17880
+    volumes:
+      - ../../.dev/media/minutes.yaml:/media-config/minutes.yaml:ro
+      - ../../.dev/media/recorder.token:/media-config/recorder.token:ro
+      - ../../.dev/media-run:/media-run
+      - ../../.dev/recorder-data:/recorder-data
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+    depends_on: [core, livekit]
+    logging: *logs

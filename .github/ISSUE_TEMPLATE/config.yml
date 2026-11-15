@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Vulnerability
+    url: https://github.com/ilguzin/checkpoint/security/advisories/new
+    about: Report a vulnerability privately; if this channel is unavailable, follow SECURITY.md.

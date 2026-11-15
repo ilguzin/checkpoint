@@ -1,0 +1,59 @@
+# Example for checkpoint deploy plan/apply. Replace documentation addresses and domains.
+# Use a private local target file for real infrastructure. Never commit secrets.
+apiVersion: checkpoint/v1alpha1
+kind: DeploymentTarget
+metadata:
+  name: team-vps
+spec:
+  topology: single-node
+  nodes:
+    - name: primary
+      address: 203.0.113.20
+      roles: [core, signal, livekit, observer, edge]
+      platform:
+        os: ubuntu
+        version: "24.04"
+        architecture: amd64
+      ssh:
+        user: root
+        port: 22
+        auth: agent
+        # Alternatively auth: identity-file and a local identityFile path.
+        knownHostsFile: ~/.ssh/checkpoint_known_hosts
+  release:
+    repository: ilguzin/checkpoint
+    version: v0.1.0 # Illustrative: this release does not exist yet.
+    verifySignature: true
+  domains:
+    app: meet.example.com
+    signaling: rtc.example.com
+    turn: turn.example.com
+    observer: status.example.com
+  tls:
+    provider: certbot
+    email: admin@example.com
+    # Or omit email and set noEmail: true.
+  security:
+    ssh:
+      passwordAuthentication: false
+      rootLogin: prohibit-password
+      allowedCIDRs: [198.51.100.10/32] # Replace with verified operator access.
+    firewall:
+      provider: ufw
+      enabled: true
+      manageIPv6: true
+      allowTurnUDP: false
+    services:
+      unprivileged: true
+    osUpdates:
+      securityUpdates: true
+      automaticReboot: false
+  backup:
+    directory: /var/backups/checkpoint
+    retentionDays: 7
+  # Optional module: models require additional RAM and disk space.
+  # minutes:
+  #   enabled: true
+  #   language: ru
+  #   transcription:
+  #     language: auto

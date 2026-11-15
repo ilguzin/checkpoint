@@ -1,0 +1,11 @@
+[hidden] { display: none !important; }
+.user-settings-main { width: min(680px,100%); margin: 40px auto; padding: 0 12px 32px; }
+.user-settings-main h1 { font-size: clamp(26px,5vw,36px); margin-bottom: 10px; }
+.user-settings-main h1:focus { outline: none; }
+.user-settings-card { margin: 20px 0; padding: clamp(18px,4vw,28px); border: 1px solid var(--border); border-radius: 18px; background: #fffefb; }
+.user-settings-card h2 { font-size: 18px; margin: 0 0 20px; }
+.user-settings-card form { display: grid; gap: 18px; }
+.user-settings-card label { margin: 0; }
+.user-settings-card input, .user-settings-card select { width: 100%; }
+.user-settings-card .language-settings { width: 100%; }
+.user-settings-card .language-settings label { width: 100%; display: grid; gap: 10px; }

@@ -1,0 +1,27 @@
+.device-control { display: flex; flex-direction: row; flex: none; overflow: hidden; border: 1px solid #d9ddd2; border-radius: 11px; }
+.call-dock .device-control > .lk-button { border: 0; border-radius: 9px 0 0 9px; }
+.call-dock .device-menu-trigger { width: 22px; min-width: 22px; height: auto; min-height: 36px; align-self: stretch; padding: 0; border: 0; border-left: 1px solid #d9ddd2; border-radius: 0; color: #697265; background: #e9efe4; }
+.call-dock .device-menu-trigger:hover, .call-dock .device-menu-trigger[aria-expanded="true"] { color: #2a302b; background: #dce6d5; }
+.device-menu { position: fixed; z-index: 60; width: min(300px,calc(100vw - 16px)); max-height: min(340px,55dvh); overflow-y: auto; border: 1px solid #c4cebd; border-radius: 14px; padding: 6px; background: #fffefb; color: #2a302b; box-shadow: 0 12px 40px #29332918; }
+.device-menu-title { padding: 9px 10px; font-size: 12px; font-weight: 650; color: #697265; }
+.device-menu button { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 42px; padding: 10px; text-align: left; background: transparent; border: 0; border-radius: 8px; color: inherit; font-size: 13px; }
+.device-menu button span { min-width: 0; overflow-wrap: anywhere; }
+.device-menu button svg { flex: none; color: var(--accent); }
+.device-menu button:hover, .device-menu button:focus-visible { background: #dce6d5; }
+.device-menu button[aria-checked="true"] { background: #e9efe4; }
+.device-menu p { margin: 10px; color: #697265; font-size: 12px; line-height: 1.5; }
+@media (max-width: 760px) {
+  .call-dock .device-menu-trigger { width: 24px; min-width: 24px; height: auto; min-height: 44px; }
+}
+@media (max-width: 480px) {
+  .call-connection > span:last-child { display: none; }
+  .call-dock .dock-chat { display: none; }
+  .small-screen-chat { display: inline-flex; }
+}
+.small-screen-people { display: none; }
+@media (max-width: 360px) {
+  .call-dock .device-control > .lk-button { width: 40px; min-width: 40px; }
+  .call-dock .device-menu-trigger { width: 22px; min-width: 22px; }
+  .call-dock .dock-people { display: none; }
+  .small-screen-people { display: inline-flex; }
+}

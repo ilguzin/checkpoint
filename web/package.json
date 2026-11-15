@@ -1,0 +1,30 @@
+{
+  "name": "checkpoint-web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "npm run check:locales && tsc --noEmit && vite build && touch ../internal/web/dist/.gitkeep",
+    "dev": "vite --host 127.0.0.1",
+    "check:locales": "node scripts/check-locales.mjs"
+  },
+  "dependencies": {
+    "@livekit/components-react": "2.9.25",
+    "@livekit/components-styles": "1.2.0",
+    "i18next": "27.1.1",
+    "livekit-client": "2.23.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-i18next": "18.0.1",
+    "tslib": "2.8.1"
+  },
+  "devDependencies": {
+    "@babel/parser": "8.1.0",
+    "@playwright/test": "1.65.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.3.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.7"
+  }
+}

@@ -1,0 +1,40 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  draft:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      CHECKPOINT_RELEASE_PUBLIC_KEY: ${{ vars.CHECKPOINT_RELEASE_PUBLIC_KEY }}
+      CHECKPOINT_BUILD_VERSION: ${{ github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Verify source and public key
+        run: |
+          python3 scripts/public-content-check.py
+          python3 - <<'PY'
+          import base64, os, re
+          tag = os.environ['CHECKPOINT_BUILD_VERSION']
+          assert re.fullmatch(r'v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', tag), 'Stable semantic version required'
+          key = base64.b64decode(os.environ['CHECKPOINT_RELEASE_PUBLIC_KEY'], validate=True)
+          assert len(key) == 42 and key[:2] == b'Ed', 'Pinned Minisign public key required'
+          PY
+          git merge-base --is-ancestor HEAD origin/main
+      - name: Build native bundle and installer
+        run: |
+          scripts/build-native.sh
+          printf '%s\n' "$CHECKPOINT_RELEASE_PUBLIC_KEY" > .dev/native/release.pub
+          python3 scripts/release.py installer --public-key .dev/native/release.pub --output .dev/native/install.sh
+      - name: Create unsigned draft
+        run: |
+          python3 scripts/create-release-draft.py "$CHECKPOINT_BUILD_VERSION"

@@ -1,0 +1,11 @@
+# Only for automated localhost browser tests before Tailscale Serve is available.
+# scripts/browser.sh restores the normal tailnet configuration on exit.
+services:
+  core:
+    environment:
+      CHECKPOINT_PUBLIC_URL: http://127.0.0.1:18180
+      CHECKPOINT_SIGNAL_URL: ws://127.0.0.1:18181
+      CHECKPOINT_OBSERVER_URL: http://127.0.0.1:18182
+  signal:
+    environment:
+      CHECKPOINT_PUBLIC_URL: http://127.0.0.1:18180

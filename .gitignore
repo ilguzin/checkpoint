@@ -1,0 +1,13 @@
+.dev/
+.env
+node_modules/
+web/dist/
+internal/web/dist/*
+!internal/web/dist/.gitkeep
+bin/
+coverage.out
+*.test
+__pycache__/
+playwright-report/
+test-results/
+deploy/targets/*.local.yaml

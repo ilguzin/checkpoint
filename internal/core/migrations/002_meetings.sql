@@ -1,0 +1,16 @@
+ALTER TABLE rooms ADD COLUMN generation INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE rooms ADD COLUMN waiting_room INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE rooms ADD COLUMN locked INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE rooms ADD COLUMN screen_identity TEXT NOT NULL DEFAULT '';
+ALTER TABLE rooms ADD COLUMN screen_until INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE sessions ADD COLUMN generation INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE sessions ADD COLUMN admitted INTEGER NOT NULL DEFAULT 1;
+ALTER TABLE sessions ADD COLUMN hand_at INTEGER NOT NULL DEFAULT 0;
+CREATE TABLE messages (
+ id INTEGER PRIMARY KEY AUTOINCREMENT, room_id TEXT NOT NULL REFERENCES rooms(id), generation INTEGER NOT NULL,
+ identity TEXT NOT NULL REFERENCES sessions(identity), name TEXT NOT NULL,
+ kind TEXT NOT NULL CHECK(kind IN ('chat','question')), body TEXT NOT NULL,
+ created INTEGER NOT NULL, answered INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX messages_room ON messages(room_id,generation,id);
+CREATE INDEX messages_sender ON messages(identity,created);

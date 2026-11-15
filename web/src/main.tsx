@@ -1,0 +1,10 @@
+import './i18n';
+import { LanguageProvider } from './LanguageSettings';
+import { lazy, Suspense } from 'react';
+import { createRoot } from 'react-dom/client';
+import './style.css';
+import { LoadingScreen } from './LoadingScreen';
+const App = lazy(() => import('./App'));
+const HealthPage = lazy(() => import('./HealthPage'));
+const LicensesPage = lazy(() => import('./LicensesPage'));
+createRoot(document.getElementById('root')!).render(<LanguageProvider><Suspense fallback={<LoadingScreen />}>{location.pathname === '/licenses' ? <LicensesPage /> : document.documentElement.dataset.app === 'observe' ? <HealthPage /> : <App />}</Suspense></LanguageProvider>);
