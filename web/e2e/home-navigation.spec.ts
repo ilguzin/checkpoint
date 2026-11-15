@@ -1,0 +1,58 @@
+import { test, expect } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+const enabled = process.env.CHECKPOINT_UI_SETTINGS === '1';
+const cfg = enabled ? JSON.parse(readFileSync(process.env.CHECKPOINT_NATIVE_ACCESS!, 'utf8')) : {};
+test.skip(!enabled, 'Requires isolated UI stand');
+
+for (const width of [320, 390, 1280]) test(`home, account header and room navigation at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 900 });
+  await page.goto(cfg.publicURL);
+  await expect(page.getByRole('heading', { name: 'Join a room', exact: true })).toBeVisible();
+  await expect(page.getByRole('banner').getByRole('link', { name: /Service health/ })).toHaveCount(0);
+  await expect(page.getByRole('contentinfo').getByRole('link', { name: /Service health/ })).toBeVisible();
+  await page.getByRole('link', { name: 'All rooms', exact: true }).click();
+  await expect(page).toHaveURL(cfg.publicURL + '/rooms');
+  await page.getByLabel('Username', { exact: true }).fill(cfg.adminUsername);
+  await page.getByLabel('Password', { exact: true }).fill(cfg.adminPassword);
+  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Your rooms', exact: true })).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Your rooms', exact: true })).toBeVisible();
+  const header = page.getByRole('banner');
+  await expect(header.getByText(cfg.adminUsername, { exact: true })).toBeVisible();
+  await expect(header.getByRole('button', { name: 'Sign out', exact: true })).toBeVisible();
+  await header.getByRole('button', { name: 'User settings', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'User settings', exact: true })).toBeVisible();
+  await expect(page.getByRole('banner').getByText(cfg.adminUsername, { exact: true })).toBeVisible();
+  await page.getByRole('button', { name: '← Back', exact: true }).click();
+  await expect(page).toHaveURL(cfg.publicURL + '/rooms');
+  await header.getByRole('link', { name: /Checkpoint/ }).click();
+  await expect(page).toHaveURL(cfg.publicURL + '/');
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Join a room', exact: true })).toBeVisible();
+  await expect(page.getByLabel('Your name', { exact: true })).toHaveValue(cfg.adminUsername);
+  const card = await page.getByRole('link', { name: 'All rooms', exact: true }).boundingBox();
+  expect(card!.height).toBeLessThan(90);
+  const brand = await header.getByRole('link', { name: /Checkpoint/ }).boundingBox();
+  const profile = await header.getByText(cfg.adminUsername, { exact: true }).boundingBox();
+  expect(profile!.x).toBeGreaterThan(brand!.x + brand!.width);
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: `../.dev/home-${width}.png`, fullPage: true });
+  await page.getByRole('link', { name: 'All rooms', exact: true }).click();
+  await page.goBack();
+  await expect(page.getByRole('heading', { name: 'Join a room', exact: true })).toBeVisible();
+  await page.goForward();
+  await expect(page.getByRole('heading', { name: 'Your rooms', exact: true })).toBeVisible();
+  await header.getByRole('button', { name: 'User settings', exact: true }).click();
+  if (width === 320) {
+    await page.route('**/api/account/logout', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: 'Unable to sign out' }) }));
+    await page.getByRole('banner').getByRole('button', { name: 'Sign out', exact: true }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page).toHaveURL(cfg.publicURL + '/settings');
+    await page.unroute('**/api/account/logout');
+  }
+  await page.getByRole('banner').getByRole('button', { name: 'Sign out', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Join a room', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign out', exact: true })).toHaveCount(0);
+  expect((await page.request.get(cfg.publicURL + '/api/account')).status()).toBe(401);
+});

@@ -1,0 +1,71 @@
+.entry-home { width: min(100%,560px); margin: 0 auto; padding: clamp(24px,6vh,64px) 20px 24px; }
+.entry-paths { display: grid; gap: 14px; }
+.entry-join-card { min-width: 0; border: 1px solid var(--border); border-radius: 20px; padding: 28px; background: var(--surface); }
+.entry-join-card h1 { font-size: 28px; letter-spacing: -.7px; margin: 0 0 10px; }
+.entry-join-card > p { font-size: 13px; margin: 0 0 22px; }
+.entry-form { display: grid; gap: 16px; }
+.entry-form label { margin: 0; }
+.entry-form .entry-invitation-help { margin: -6px 0 0; font-size: 11px; }
+.entry-form > button { margin-top: 2px; }
+.entry-actions { display: grid; gap: 8px; margin-top: 10px; }
+.entry-actions > button { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 9px; }
+.entry-rooms-link { display: flex; align-items: center; gap: 14px; padding: 18px 22px; min-height: 64px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); color: #2a302b; text-decoration: none; font-weight: 600; transition: border-color .15s, background .15s; }
+.entry-rooms-link:hover { border-color: var(--accent); background: var(--raised); }
+.entry-rooms-link > svg { color: var(--accent); flex: none; }
+.entry-rooms-link > span:last-child { margin-left: auto; color: var(--muted); }
+.entry-footer { margin-top: 20px; text-align: center; }
+.entry-footer p { margin: 0; font-size: 12px; }
+@media (max-width: 480px) {
+  .entry-home { padding: 24px 16px; }
+  .entry-join-card { padding: 20px; border-radius: 16px; }
+  .entry-paths input { font-size: 16px; }
+}
+.device-check-dialog {
+  width: min(540px, calc(100% - 32px)); max-width: none; max-height: calc(100dvh - 32px);
+  margin: auto; padding: 0; border: 1px solid var(--border); border-radius: 20px;
+  color: #2a302b; background: var(--surface); box-shadow: 0 24px 100px #29332918;
+  overflow: hidden;
+}
+.device-check-dialog[open] { display: flex; flex-direction: column; }
+.device-check-dialog::backdrop { background: #0b111a80; backdrop-filter: blur(6px); }
+.device-dialog-heading { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 24px; border-bottom: 1px solid var(--border); }
+.device-dialog-heading .eyebrow { font-size: 10px; letter-spacing: 1.3px; }
+.device-dialog-heading h2 { font-size: 22px; margin: 6px 0 0; }
+.device-dialog-close { display: grid; place-items: center; padding: 10px; width: 40px; height: 40px; min-height: 40px; flex: none; }
+.device-dialog-body { min-height: 0; padding: 20px 24px 24px; overflow-y: auto; overscroll-behavior: contain; }
+.device-dialog-body > p:first-child { margin: 0 0 16px; font-size: 13px; }
+.device-dialog-body .device-preview { padding: 0; }
+.device-preview-name-label { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.device-check-dialog .lk-prejoin { width: 100%; max-width: none; padding: 0; background: transparent; gap: 16px; }
+.device-check-dialog .lk-video-container { min-height: 0; aspect-ratio: 16 / 9; border-radius: 12px; border: 1px solid var(--border); background: #f7f6f2; }
+.device-check-dialog .lk-video-container video { width: 100%; height: 100%; object-fit: cover; }
+.device-check-dialog .lk-camera-off-note { min-height: 0; height: 100%; }
+.device-check-dialog .lk-camera-off-note svg { width: 72px; height: 72px; opacity: .55; }
+.device-check-dialog .lk-button-group-container { gap: 12px; width: 100%; flex-wrap: wrap; }
+.device-check-dialog .lk-button-group { flex: 1 1 160px; min-width: 0; }
+.device-check-dialog .lk-button { min-height: 44px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600; }
+.device-check-dialog .lk-button-group > .lk-button { flex: 1; justify-content: center; }
+.device-check-dialog .lk-button-group > .lk-button[data-lk-enabled="false"] { background: var(--raised); color: #2a302b; }
+.device-check-dialog .lk-button-group > .lk-button[data-lk-enabled="true"] { background: #e9efe4; color: var(--accent); }
+.device-check-dialog .lk-button-group-menu > .lk-button { padding-inline: 10px; }
+.device-check-dialog .lk-username-container { gap: 12px; margin: 0; width: 100%; }
+.device-check-dialog .lk-form-control { width: 100%; border: 1px solid #c4cebd; border-radius: 10px; padding: 12px 14px; background: #f7f6f2; color: #2a302b; font: inherit; }
+.device-check-dialog .lk-join-button { width: 100%; background: var(--accent); color: #fffefb; margin: 0; }
+.device-check-dialog .lk-device-menu { max-width: min(380px, calc(100vw - 64px)); max-height: 190px; overflow-y: auto; }
+.device-check-dialog .lk-device-menu button { white-space: normal; text-align: left; overflow-wrap: anywhere; }
+.device-preview-note { margin: 16px 0 0; text-align: center; font-size: 12px; }
+@media (max-width: 480px) {
+  .device-check-dialog { width: calc(100% - 20px); max-height: calc(100dvh - 20px); border-radius: 16px; }
+  .device-dialog-heading { padding: 16px; }
+  .device-dialog-heading h2 { font-size: 20px; }
+  .device-dialog-close { width: 44px; height: 44px; min-height: 44px; }
+  .device-dialog-body { padding: 16px; }
+  .device-check-dialog .lk-button-group-container { gap: 8px; }
+  .device-check-dialog .lk-button-group { flex-basis: 140px; }
+}
+
+.admin-invitation-screen { width: min(560px,calc(100% - 32px)); margin: 6vh auto; padding: 28px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); }
+.admin-invitation-screen h1 { font-size: clamp(28px,4vw,38px); letter-spacing: -1px; }
+.admin-invitation-screen p { font-size: 14px; }
+.admin-invitation-screen .hint { font-size: 12px; }
+.invitation-account { padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--raised); }

@@ -1,0 +1,12 @@
+.git
+.dev
+.env
+.agents
+.codex
+.aws
+deploy/targets/*.local.yaml
+**/node_modules
+web/dist
+internal/web/dist
+bin
+test-results

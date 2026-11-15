@@ -1,0 +1,58 @@
+.service-header { padding: 18px max(24px,5vw); gap: 20px; }
+.service-header .service-header-label { padding-left: 20px; border-left: 1px solid var(--border); }
+.service-header .service-update { margin-left: auto; font-size: 11px; }
+.service-header .service-back { font-size: 13px; padding: 10px 0; }
+.health .service-main { max-width: 1080px; margin: 0 auto; padding: 36px 24px 48px; }
+.health h1, .license-page h1 { font-size: clamp(30px,4vw,44px); line-height: 1.15; letter-spacing: -1.3px; margin: 14px 0 18px; }
+.health .service-main > p, .license-page > p { max-width: 760px; font-size: 14px; }
+.health .health-nav { max-width: 1080px; margin-top: 24px; padding: 0 24px; gap: 4px; }
+.health-nav button { font-size: 13px; min-height: 40px; padding: 9px 14px; border-color: transparent; background: transparent; color: var(--muted); }
+.health-nav button:hover { color: #2a302b; background: var(--raised); }
+.health-nav button.active { background: #e9efe4; color: var(--accent); border-color: #c4cebd; }
+.health .health-grid { gap: 14px; margin: 28px 0; }
+.health article, .health .panel { padding: 22px; border-radius: 16px; }
+.health article h2 { font-size: 17px; line-height: 1.4; margin: 16px 0 12px; }
+.health article p { font-size: 13px; margin: 10px 0; }
+.health article small { font-size: 11px; margin-top: 8px; }
+.health article .badge { font-size: 11px; }
+.health .panel h2 { font-size: 18px; margin-top: 0; }
+.health .panel p { font-size: 14px; max-width: 760px; }
+.health .metric { font-size: clamp(24px,3vw,32px); margin: 16px 0; }
+.health .badge.unknown { color: #2a302b; background: #edece6; }
+.health .badge.maintenance { color: #865518; background: #fff1d8; }
+.service-section-title { font-size: 18px; margin: 32px 0 16px; }
+.health .day-bars { margin: 24px 0; gap: 5px; }
+.health .day-bars button { min-height: 56px; border-radius: 5px; border: 2px solid transparent; }
+.health .day-bars button[aria-pressed="true"] { border-color: #fffefb; }
+.health footer { margin-top: 36px; padding-top: 20px; }
+.health footer .hint { font-size: 12px; max-width: 850px; }
+.licenses .license-page { max-width: 960px; margin: 0 auto; padding: 36px 24px 64px; }
+.license-search { display: flex; gap: 16px; align-items: flex-end; margin: 28px 0 20px; }
+.license-search label { flex: 1; max-width: 520px; margin: 0; }
+.license-search > .hint { padding-bottom: 12px; white-space: nowrap; }
+.license-list { display: grid; gap: 10px; }
+.license-list details { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0 18px; }
+.license-list summary { padding: 15px 0; font-size: 14px; font-weight: 550; }
+.license-list summary > span { overflow-wrap: anywhere; }
+.license-list summary small { margin-left: 8px; font-weight: 400; }
+.license-list details[open] > summary { border-bottom: 1px solid var(--border); }
+.license-list section { padding: 8px 0 16px; }
+.license-list h2 { font-size: 13px; line-height: 1.5; }
+.license-list pre { padding: 16px; border: 1px solid var(--border); border-radius: 10px; background: #f7f6f2; font-size: 12px; line-height: 1.7; }
+.service-empty { padding: 28px; border: 1px dashed var(--border); border-radius: 14px; text-align: center; }
+.service-empty h2 { font-size: 17px; }
+.service-empty p { font-size: 14px; }
+@media (max-width: 760px) {
+  .service-header { padding: 14px 16px; gap: 12px; }
+  .service-header .service-update { display: inline-block; margin-left: auto; max-width: 144px; text-align: center; font-size: 10px; }
+  .health .service-main, .licenses .license-page { padding: 28px 16px 40px; }
+  .health .health-nav { padding: 0 16px; margin-top: 18px; gap: 6px; }
+  .health-nav button { flex: 1 1 40%; min-height: 44px; padding: 10px 8px; font-size: 12px; }
+  .health .health-grid { gap: 12px; margin: 24px 0; }
+  .health article, .health .panel { padding: 18px; }
+  .health .day-bars button { min-height: 44px; }
+  .license-search { gap: 10px; align-items: stretch; flex-direction: column; margin: 24px 0 16px; }
+  .license-search > .hint { padding: 0; }
+  .license-list details { padding: 0 14px; }
+  .license-list pre { padding: 12px; font-size: 11px; }
+}

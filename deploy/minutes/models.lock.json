@@ -1,0 +1,56 @@
+{
+  "format": 1,
+  "models": [
+    {
+      "id": "Qwen/Qwen3-4B-GGUF",
+      "revision": "bc640142c66e1fdd12af0bd68f40445458f3869b",
+      "license": "Apache-2.0",
+      "files": [
+        {
+          "name": "Qwen3-4B-Q4_K_M.gguf",
+          "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/Qwen3-4B-Q4_K_M.gguf",
+          "sha256": "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"
+        },
+        {
+          "name": "LICENSE",
+          "url": "https://huggingface.co/Qwen/Qwen3-4B-GGUF/resolve/bc640142c66e1fdd12af0bd68f40445458f3869b/LICENSE",
+          "sha256": "5de36594c10839788a8c589443a8ef9d8b8d17c65a1b5807206ae037fc36c6bd"
+        }
+      ]
+    },
+    {
+      "id": "Systran/faster-whisper-medium",
+      "revision": "08e178d48790749d25932bbc082711ddcfdfbc4f",
+      "license": "MIT",
+      "files": [
+        {
+          "name": "config.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/config.json",
+          "sha256": "3622a2ddc41ec0e0fd4e68c13c6830f03b90c38d89aaad184de02c8c642cf807"
+        },
+        {
+          "name": "model.bin",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/model.bin",
+          "sha256": "9b45e1009dcc4ab601eff815b61d80e60ce3fd8c74c1a14f4a282258286b51ae"
+        },
+        {
+          "name": "tokenizer.json",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/tokenizer.json",
+          "sha256": "fb7b63191e9bb045082c79fd742a3106a12c99513ab30df4a0d47fa6cb6fd0ab"
+        },
+        {
+          "name": "vocabulary.txt",
+          "url": "https://huggingface.co/Systran/faster-whisper-medium/resolve/08e178d48790749d25932bbc082711ddcfdfbc4f/vocabulary.txt",
+          "sha256": "34ce3fe1c5041027b3f8d42912270993f986dbc4bb34cf27f951e34a1e453913"
+        }
+      ]
+    }
+  ],
+  "llama": {
+    "version": "v0.9.0",
+    "commit": "cd959bae99ff4bed22bef2604f45241c09bbb8c8",
+    "url": "https://codeload.github.com/ggml-org/llama.cpp/tar.gz/cd959bae99ff4bed22bef2604f45241c09bbb8c8",
+    "sha256": "fbe74146a3cdc00f706773eb233bc4aedb7d8c3c7e2122440e492a99c1ec5a76",
+    "license": "MIT"
+  }
+}

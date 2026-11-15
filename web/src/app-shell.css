@@ -1,0 +1,30 @@
+.app-shell:not(.in-call) { min-height: 100dvh; display: flex; flex-direction: column; }
+.app > .app-header { display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between; gap: 16px; padding: 16px clamp(16px,4vw,48px); }
+.app-header .brand { white-space: nowrap; flex: none; }
+.account-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; min-width: 0; flex: none; }
+.app-header .account-actions { flex: 0 1 auto; margin-left: auto; }
+.account-actions .account-name { display: block; min-width: 0; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; color: #2a302b; }
+.account-actions .account-action { display: grid; place-items: center; width: 40px; min-height: 40px; padding: 0; flex: none; border: 1px solid transparent; }
+.account-actions .account-action:hover { border-color: var(--border); background: var(--raised); }
+.app-footer { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 24px; margin-top: auto; padding: 24px 16px; }
+.app-footer a { color: var(--muted); font-size: 12px; text-decoration: none; }
+.app-footer a:hover { color: var(--accent); }
+.session-controls .account-actions { gap: 4px; }
+.session-controls .account-name { max-width: 110px; font-size: 12px; }
+.session-controls .account-action { width: 32px; min-height: 32px; }
+@media (max-width: 600px) {
+  .session-controls .account-name { max-width: 64px; }
+  .session-controls { flex-wrap: wrap; }
+  .session-controls .account-actions { margin-left: auto; }
+}
+@media (max-width: 480px) {
+  .app > .app-header { gap: 8px; padding: 12px 16px; }
+  .app-header .brand { font-size: 19px; }
+  .account-actions { gap: 4px; }
+  .app-header .account-name { max-width: 80px; }
+}
+@media (max-width: 360px) {
+  .app-header .brand { font-size: 17px; }
+  .app-header .account-name { max-width: 48px; }
+  .account-actions .account-sign-in { padding-inline: 8px; }
+}

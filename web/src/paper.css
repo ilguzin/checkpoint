@@ -1,0 +1,67 @@
+/* Paper: quiet surfaces, a focused stage and compact controls. */
+.app-header .brand { display: inline-flex; align-items: center; gap: 8px; }
+.app-brand-mark { display: inline-grid; place-items: center; width: 25px; height: 25px; flex: none; background: var(--accent); color: #fffefb; border-radius: 8px; }
+.app-brand-mark svg { width: 17px; height: 17px; }
+.app [data-lk-theme="default"], .device-check-dialog [data-lk-theme="default"] { --lk-fg: #2a302b; --lk-fg2: #697265; --lk-fg3: #697265; --lk-control-fg: #2a302b; --lk-control-bg: #edece6; --lk-control-hover-bg: #e9efe4; --lk-connection-excellent: #42644b; }
+.focus-layout { display: grid; height: 100%; min-height: 0; min-width: 0; gap: 10px; }
+.focus-layout.has-others { grid-template-columns: minmax(0,1fr) clamp(150px,21%,260px); }
+.focused-tile { min-width: 0; min-height: 0; height: 100%; }
+.participant-filmstrip { min-height: 0; min-width: 0; --lk-grid-gap: 10px; }
+.conference .lk-participant-tile { background: #edece6; border: 1px solid #d9ddd2; border-radius: 16px; }
+.conference .lk-participant-placeholder { background: radial-gradient(ellipse at center,#f9faf5,#e9ece3); }
+.tile-avatar { display: grid; place-items: center; width: clamp(56px,12vw,120px); aspect-ratio: 1; border-radius: 50%; color: #42644b; background: #d9e3d0; font-size: clamp(24px,4vw,44px); font-weight: 550; letter-spacing: -.04em; }
+.participant-filmstrip .tile-avatar { width: 56px; font-size: 24px; }
+.conference .lk-participant-metadata { color: #fffefb; }
+.conference .lk-participant-metadata-item { background: #26332bba; border-radius: 7px; }
+.conference .lk-participant-tile[data-lk-speaking="true"] { box-shadow: inset 0 0 0 2px #42644b; }
+.dock-devices, .dock-actions { display: flex; align-items: center; gap: 4px; }
+.dock-devices { padding-right: 5px; margin-right: 3px; border-right: 1px solid var(--border); }
+.call-dock .device-control { border: 0; background: #edece6; border-radius: 10px; }
+.call-dock .device-control:has([data-lk-enabled="true"]), .call-dock .device-control:has([aria-pressed="true"]) { background: #e9efe4; }
+.call-dock .device-control > button, .call-dock .device-menu-trigger { background: transparent; border: 0; }
+.call-dock .device-control > button:hover { background: #42644b12; }
+.call-dock .device-control > .lk-button[data-lk-enabled="false"] { background: transparent; }
+.call-dock .device-menu-trigger { border-radius: 0 10px 10px 0; }
+.call-dock .dock-button.selected, .call-dock .dock-button[aria-expanded="true"] { background: #dce6d5; color: #36573f; box-shadow: inset 0 0 0 1px #b8cbb0; }
+.call-dock .dock-share.active { background: #dcecf5; color: #245b7b; box-shadow: inset 0 0 0 1px #adcddd; }
+.call-dock .recording-action { width: 36px; padding: 7px; }
+.call-dock .recording-action-label, .call-dock .recording-label { display: none; }
+.call-dock .recording-indicator { width: 36px !important; }
+.call-dock .recording-start { background: transparent; color: #697265; }
+.call-dock .recording-stop, .call-dock .dock-button.danger { background: #b63e45; color: #fffefb; }
+.recording-tooltip, .recording-popover, .recording-error { position: fixed; top: auto; bottom: max(82px,calc(env(safe-area-inset-bottom) + 74px)); left: 50%; right: auto; transform: translateX(-50%); max-height: calc(100dvh - 160px); overflow-y: auto; }
+.people-group { padding-top: 18px; }
+.call-panel .people-group h3 { display: flex; align-items: center; justify-content: space-between; margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.people-group h3 span { font-size: 10px; background: var(--raised); border-radius: 5px; padding: 2px 6px; }
+.people-group .people-list { margin: 0; }
+.call-panel .people-group > p { margin: 0 0 8px; font-size: 11px; color: var(--muted); }
+.people-group-hands { border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+@media (max-width: 760px) {
+  .focus-layout.has-others { grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(0,1fr) 112px; }
+  .participant-filmstrip { --lk-grid-gap: 6px; }
+  .media-stage { padding-bottom: max(126px,calc(env(safe-area-inset-bottom) + 118px)); }
+  .call-dock { flex-direction: column; gap: 5px; padding: 6px; }
+  .dock-devices { padding: 0; margin: 0; border: 0; gap: 6px; }
+  .dock-actions { gap: 2px; }
+  .call-dock .recording-action { width: 44px; padding: 11px; }
+  .call-dock .recording-indicator { width: 44px !important; }
+  .call-dock .dock-share, .call-dock .dock-chat, .call-dock .dock-people { display: inline-flex; }
+  .call-dock .dock-hand, .call-dock .dock-questions { display: none; }
+  .small-screen-hand { display: inline-flex; }
+  .mobile-share, .small-screen-chat, .small-screen-people { display: none; }
+  .call-panel { bottom: max(126px,calc(env(safe-area-inset-bottom) + 118px)); max-height: calc(100% - 138px); height: min(580px,calc(100% - 138px)); }
+  .panel-people { height: auto; }
+  .recording-tooltip, .recording-popover, .recording-error { top: auto; bottom: max(128px,calc(env(safe-area-inset-bottom) + 120px)); max-height: calc(100dvh - 200px); }
+}
+@media (max-width: 360px) {
+  .call-dock .dock-actions button { min-width: 39px; width: 39px; padding: 9px; }
+}
+@media (max-height: 480px) and (orientation: landscape) {
+  .focus-layout.has-others { grid-template-columns: minmax(0,1fr) 150px; grid-template-rows: minmax(0,1fr); }
+  .call-dock { flex-direction: row; }
+  .call-dock button { min-width: 34px; width: 34px; min-height: 34px; height: 34px; padding: 7px; }
+  .call-dock .recording-action { width: 34px; }
+  .call-dock .device-menu-trigger { min-height: 34px; }
+  .media-stage { padding-bottom: 62px; }
+  .call-panel { bottom: 62px; max-height: calc(100% - 66px); }
+}

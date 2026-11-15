@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content"/>
+    <meta name="theme-color" content="#f7f6f2"/>
+    <link rel="stylesheet" href="/src/loading.css"/>
+    <title>Checkpoint</title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Keep in sync with LoadingScreen: visible even before the app bundle loads. -->
+      <main class="startup-loader" role="status" aria-label="Loading Checkpoint">
+        <div class="startup-content" aria-hidden="true">
+          <div class="startup-mark"><span class="startup-ring"></span><span class="startup-ring startup-ring-delayed"></span><span class="startup-core"></span></div>
+          <div class="startup-name">Checkpoint</div>
+          <div class="startup-tagline">Sync up. Move forward.</div>
+          <div class="startup-progress"><span></span></div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

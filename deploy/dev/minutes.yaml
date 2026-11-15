@@ -1,0 +1,14 @@
+# Local Tailscale environment: recording and archive without downloading ASR/LLM models.
+# Minutes become available after configuring models and a separate processor.
+enabled: true
+storage: /recordings
+socket: /media-run/core.sock
+ffmpeg: /usr/bin/ffmpeg
+language: ru
+confirmationSeconds: 7200
+warningSeconds: 300
+emptySeconds: 60
+maxConcurrentRecordings: 2
+maxSources: 32
+minFreeBytes: 2147483648
+maxStorageBytes: 21474836480

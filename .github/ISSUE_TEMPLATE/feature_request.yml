@@ -1,0 +1,17 @@
+name: Feature request
+description: A problem that Checkpoint does not yet address
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What behavior would help?
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: How do you handle this today?
