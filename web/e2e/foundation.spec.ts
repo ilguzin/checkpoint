@@ -43,8 +43,15 @@ test('organizer creates a webinar, invites a guest, promotes and revokes access'
     await page.locator('summary[aria-label="Actions for Foundation guest"]').click();
     await page.getByRole('button', { name: 'Invite to speak', exact: true }).click();
     await expect(guest.getByText('You can speak and share your screen. Use the controls below to turn on your devices.')).toBeVisible();
-    if (!(await page.getByRole('button', { name: 'Move to audience', exact: true }).isVisible())) await page.locator('summary[aria-label="Actions for Foundation guest"]').click();
-    await page.getByRole('button', { name: 'Move to audience', exact: true }).click();
+    // The host list updates after the guest sees the promotion and may re-render the member row.
+    // Open the menu only when it is closed and retry until the new action appears; a blind click would close it.
+    const guestActions = page.locator('details.member-actions', { has: page.locator('summary[aria-label="Actions for Foundation guest"]') });
+    const moveToAudience = page.getByRole('button', { name: 'Move to audience', exact: true });
+    await expect(async () => {
+      if (!(await guestActions.evaluate(element => (element as HTMLDetailsElement).open))) await guestActions.locator('summary').click();
+      await expect(moveToAudience).toBeVisible({ timeout: 2_000 });
+    }).toPass({ timeout: 30_000 });
+    await moveToAudience.click();
     await expect(guest.getByText('You are watching. A host can invite you to speak.')).toBeVisible();
     const code = await page.evaluate(async path => (await fetch(path, { method: 'POST', body: '{}' })).status, revokePath);
     expect(code).toBe(200);
