@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	aead.dev/minisign v0.3.0
-	github.com/at-wat/ebml-go v0.18.0
+	github.com/at-wat/ebml-go v0.19.4
 	github.com/go-logr/logr v1.4.4
 	github.com/livekit/media-sdk v0.1.1
 	github.com/livekit/protocol v1.51.1-0.20260910121219-271d9cde3897
