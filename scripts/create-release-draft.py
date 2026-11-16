@@ -12,11 +12,23 @@ tag = sys.argv[1]
 if not re.fullmatch(r'v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', tag):
     raise SystemExit('Invalid stable version')
 run = subprocess.run
-listing = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/releases?per_page=100']))
-existing = next((r for page in listing for r in page if r['tag_name'] == tag), None)
+
+
+def find_release():
+    # GET /releases/tags/{tag} does not return drafts, so look the tag up in the full list.
+    listing = json.loads(subprocess.check_output(['gh', 'api', '--paginate', '--slurp', f'repos/{repo}/releases?per_page=100']))
+    found = [r for page in listing for r in page if r['tag_name'] == tag]
+    if len(found) > 1:
+        raise SystemExit(f'Several releases use tag {tag}; inspect them on GitHub')
+    return found[0] if found else None
+
+
+existing = find_release()
 if existing is None:
     run(['gh', 'release', 'create', tag, '--repo', repo, '--verify-tag', '--draft', '--title', f'Checkpoint {tag}', '--notes', 'Unsigned draft. The owner must verify and sign release.json locally before publication.'], check=True)
-    existing = json.loads(subprocess.check_output(['gh','api',f'repos/{repo}/releases/tags/{tag}']))
+    existing = find_release()
+    if existing is None:
+        raise SystemExit('Draft was created but is not listed yet; rerun the workflow')
 if not existing['draft'] or existing.get('immutable'):
     raise SystemExit('Refusing to modify a published/immutable release')
 assets = {a['name']: a for a in existing['assets']}

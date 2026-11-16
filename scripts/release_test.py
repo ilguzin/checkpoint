@@ -109,3 +109,20 @@ class ResumeTests(unittest.TestCase):
                 self.assertEqual(len(uploads),0 if stage=='complete' else 1)
                 if stage=='manifest':self.assertEqual([Path(x).name for x in uploads[0][4:-2]],['release.json.minisig'])
                 self.assertEqual(sum(c[:2]==('minisign','-S') for c in calls),int(stage!='complete'))
+
+    def test_draft_metadata_comes_from_release_list(self):
+        # GET /releases/tags/{tag} returns 404 for drafts, so the signer must use the list.
+        import json, subprocess
+        pages = {1: [dict(tag_name=f'v0.0.{i}', draft=False) for i in range(100)],
+                 2: [dict(tag_name='v0.1.0', draft=True, id=7)]}
+        paths = []
+        def run(*command, **kwargs):
+            path = command[2]
+            paths.append(path)
+            self.assertNotIn('/releases/tags/', path)
+            return subprocess.CompletedProcess(command, 0, stdout=json.dumps(pages[int(path.rsplit('page=', 1)[1])]))
+        with patch.object(release, 'run', side_effect=run):
+            self.assertEqual(release.release_metadata('v0.1.0', release.REPOSITORY)['id'], 7)
+            with self.assertRaisesRegex(ValueError, 'No release or draft'):
+                release.release_metadata('v9.9.9', release.REPOSITORY)
+        self.assertTrue(all('per_page=100&page=' in path for path in paths))

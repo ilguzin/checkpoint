@@ -58,10 +58,19 @@ def keygen(force=False):
 
 
 def release_metadata(tag, repo):
-    result = run('gh', 'api', f'repos/{repo}/releases/tags/{tag}', capture_output=True, text=True)
-    value = json.loads(result.stdout)
-    require(value.get('tag_name') == tag, 'Release tag mismatch')
-    return value
+    # GET /releases/tags/{tag} returns published releases only; drafts appear in the authenticated list.
+    # Page manually: older gh (Ubuntu 24.04 ships 2.45) has no `gh api --slurp`.
+    found, page = [], 1
+    while True:
+        result = run('gh', 'api', f'repos/{repo}/releases?per_page=100&page={page}', capture_output=True, text=True)
+        batch = json.loads(result.stdout)
+        found += [value for value in batch if value.get('tag_name') == tag]
+        if len(batch) < 100:
+            break
+        page += 1
+    require(found, f'No release or draft for {tag}; wait for the release workflow')
+    require(len(found) == 1, f'Several releases use tag {tag}; inspect them on GitHub')
+    return found[0]
 
 
 def fingerprint(assets):
